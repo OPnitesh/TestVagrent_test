@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class ShoppingCart{
+    public:
+    unordered_map<string, vector<double>> basket;
+    void startBilling(){
+        int totalTypes;
+        cout<<"Enter the total type of items: "<<endl;
+        cin>>totalTypes;
+        while(totalTypes--){
+            addItem();
+        }
+        maxGST();
+        totalBill();
+    }
+
+    void addItem(){ 
+        string item;
+        double quantity, price, gst, tax, discount=0;
+        cout<<"Enter the Item name: "<<endl;
+        cin>>item;
+        cout<<"Enter the qty of: "<<item<<endl;
+        cin>>quantity;
+        cout<<"Enter the price of: "<<item<<endl;
+        cin>>price;
+        cout<<"Enter the GST of: "<<item<<endl;
+        cin>>gst;
+        if(price >= 500){
+            discount = (price/100)*5;
+            price -= discount;
+        }
+        tax = (price/100)*gst;
+        basket[item] = {quantity, price, gst, tax};
+    }
+
+    void totalBill(){
+        double totalAmount=0;
+        for(auto it : basket){
+            totalAmount += it.second[1]+it.second[3];
+        }
+        cout<<"The total amount to be paid to shopkeeper is: "<<totalAmount<<endl;
+    }
+
+    void maxGST(){
+        double mx = 0;
+        for(auto it : basket){
+            mx = max(mx, it.second[3]);
+        }
+        for(auto it : basket){
+            if(it.second[3] == mx){
+                cout<<"The maximum GST paid for "<<it.first<<", and the amount is "<<it.second[3]<<endl;
+            }
+        }
+    }
+
+
+
+};
+
+int main(){
+    ShoppingCart sc;
+    sc.startBilling();
+}
